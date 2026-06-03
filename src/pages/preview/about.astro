@@ -1,0 +1,22 @@
+---
+export const prerender = false;
+
+import Base from "@/layouts/Base.astro";
+import PortableText from "@/components/PortableText.astro";
+import PreviewBanner from "@/components/PreviewBanner.astro";
+import { getPage } from "@/lib/loaders";
+
+const page = await getPage("about", { preview: true });
+const blocks = page?.body ?? [];
+---
+
+<Base title="About (Preview)">
+  <PreviewBanner />
+  <article class="mx-auto max-w-3xl px-6 lg:px-12 pt-12 pb-24">
+    <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">About</p>
+    <h1 class="h-display text-4xl sm:text-5xl mb-10">Rooted in Lisbon. Open to the world.</h1>
+    <div class="prose-festival text-[color:var(--color-ink)]/85">
+      <PortableText blocks={blocks} />
+    </div>
+  </article>
+</Base>

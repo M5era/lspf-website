@@ -1,0 +1,187 @@
+---
+import Base from "@/layouts/Base.astro";
+import TicketTailorEmbed from "@/components/TicketTailorEmbed.astro";
+import PersonGrid from "@/components/PersonGrid.astro";
+import { getWorkshops, getPeople } from "@/lib/loaders";
+
+const workshops = await getWorkshops();
+
+// Mirrors the categories on the original /activities page.
+// Until the 2026 programme is announced, we show the 2025 lineup as a
+// preview of what each category looks like.
+const [
+  workshopPeople2025,
+  photowalkPeople2025,
+  reviewerPeople2025,
+  talkPeople2025,
+] = await Promise.all([
+  getPeople(2025, "workshop"),
+  getPeople(2025, "photowalk"),
+  getPeople(2025, "portfolio-review"),
+  getPeople(2025, "spotlight-talk"),
+]);
+
+const kindLabel: Record<string, string> = {
+  workshop: "Workshop",
+  photowalk: "Photowalk",
+  talk: "Talk",
+  "portfolio-review": "Portfolio review",
+};
+
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+const fmtTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+
+const tabs = [
+  { id: "all", label: "All" },
+  { id: "masterclass", label: "Masterclasses" },
+  { id: "photowalk", label: "Photowalks" },
+  { id: "portfolio-review", label: "Portfolio Reviews" },
+  { id: "workshop", label: "Workshops" },
+];
+---
+
+<Base
+  title="Activities"
+  description="Workshops, photowalks, talks, and portfolio reviews during Lisbon Street Photo Fest 2026."
+>
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-8">
+    <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">
+      25–27 September 2026
+    </p>
+    <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Activities</h1>
+    <p class="mt-6 max-w-2xl text-lg text-[color:var(--color-ink)]/80">
+      A weekend of workshops, photowalks, portfolio reviews, and talks. Limited
+      spots — early-bird tickets and waitlists reward those who sign up first.
+    </p>
+  </section>
+
+  <nav
+    class="mx-auto max-w-[1400px] px-6 lg:px-12 mb-12 border-b border-[color:var(--color-rule)]"
+  >
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+      {
+        tabs.map((t) => (
+          <li>
+            <a
+              href={`?cat=${t.id}`}
+              class="link-quiet inline-block pb-3 -mb-px hover:border-b hover:border-[color:var(--color-ink)]"
+            >
+              {t.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    workshops.length > 0 ? (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-24">
+        <ul class="divide-y divide-[color:var(--color-rule)]">
+          {workshops.map((w) => (
+            <li id={w.slug} class="py-10 grid gap-8 md:grid-cols-[1fr_2fr]">
+              <div class="overflow-hidden bg-black/5">
+                <img
+                  src={w.cover.src}
+                  alt={w.cover.alt}
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="flex flex-col gap-4">
+                <div class="flex flex-wrap items-center gap-3">
+                  <span class="inline-flex items-center bg-[color:var(--color-ink)]/5 px-3 py-1 text-xs uppercase tracking-[0.16em]">
+                    {kindLabel[w.kind]}
+                  </span>
+                  <span class="text-sm text-[color:var(--color-muted)]">
+                    {fmtDate(w.startsAt)} · {fmtTime(w.startsAt)}
+                    {w.endsAt && ` – ${fmtTime(w.endsAt)}`}
+                  </span>
+                  {w.location && (
+                    <span class="text-sm text-[color:var(--color-muted)]">
+                      · {w.location}
+                    </span>
+                  )}
+                </div>
+
+                <h2 class="h-display text-3xl">{w.title}</h2>
+                {w.instructor && (
+                  <p class="text-sm text-[color:var(--color-muted)]">
+                    With {w.instructor}
+                  </p>
+                )}
+
+                <p class="leading-relaxed">{w.description}</p>
+
+                <div class="flex flex-wrap items-center gap-6 pt-2">
+                  <p class="text-2xl">
+                    {w.priceEUR === 0 ? "Free" : `€${w.priceEUR}`}
+                  </p>
+                  {w.capacity && (
+                    <p class="text-sm text-[color:var(--color-muted)]">
+                      {w.capacity} places
+                    </p>
+                  )}
+                  <TicketTailorEmbed
+                    eventId={w.ticketTailorEventId ?? ""}
+                    buttonLabel={w.priceEUR === 0 ? "Reserve free place" : "Get tickets"}
+                  />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ) : (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-24">
+        <div class="border border-[color:var(--color-rule)] p-12 text-center">
+          <p class="h-section text-xl mb-3">2026 programme announcing in May 2026</p>
+          <p class="text-[color:var(--color-muted)] max-w-xl mx-auto">
+            Our full programme of workshops, photowalks, portfolio reviews,
+            and talks will be revealed in May 2026. Sign up to the newsletter
+            below to be the first to know — and to receive early-bird discount codes.
+          </p>
+        </div>
+
+        <div class="mt-20 space-y-20">
+          {workshopPeople2025.length > 0 && (
+            <div>
+              <h2 class="h-section text-2xl mb-3">
+                A glimpse of 2025: workshops
+              </h2>
+              <p class="text-sm text-[color:var(--color-muted)] mb-8 max-w-2xl">
+                The 2025 workshop lineup, as a flavour of what to expect.
+              </p>
+              <PersonGrid people={workshopPeople2025} columns={4} />
+            </div>
+          )}
+          {photowalkPeople2025.length > 0 && (
+            <div>
+              <h2 class="h-section text-2xl mb-3">2025: photowalks</h2>
+              <PersonGrid people={photowalkPeople2025} columns={4} />
+            </div>
+          )}
+          {reviewerPeople2025.length > 0 && (
+            <div>
+              <h2 class="h-section text-2xl mb-3">2025: portfolio reviews</h2>
+              <PersonGrid people={reviewerPeople2025} columns={4} />
+            </div>
+          )}
+          {talkPeople2025.length > 0 && (
+            <div>
+              <h2 class="h-section text-2xl mb-3">2025: spotlight talks</h2>
+              <PersonGrid people={talkPeople2025} columns={4} />
+            </div>
+          )}
+        </div>
+      </section>
+    )
+  }
+</Base>

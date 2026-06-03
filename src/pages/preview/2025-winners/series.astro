@@ -1,0 +1,32 @@
+---
+export const prerender = false;
+
+import Base from "@/layouts/Base.astro";
+import PreviewBanner from "@/components/PreviewBanner.astro";
+import { getFinalistSeries } from "@/lib/loaders";
+
+const series2025 = await getFinalistSeries(2025, { preview: true });
+---
+
+<Base title="2025 Series (Preview)">
+  <PreviewBanner />
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-8">
+    <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">2025 Edition · Open Call Finalists</p>
+    <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Series</h1>
+  </section>
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-24 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+    {series2025.map((s) => (
+      <div class="block">
+        {s.images[0] && (
+          <div class="overflow-hidden bg-black/5 mb-4">
+            <img src={s.images[0].src} alt={s.images[0].alt} class="w-full h-auto object-cover aspect-[3/2]" loading="lazy" />
+          </div>
+        )}
+        <h2 class="h-display text-xl mb-1">{s.seriesTitle}</h2>
+        <p class="text-sm text-[color:var(--color-muted)]">{s.photographer}{s.country && `, ${s.country}`}</p>
+        {s.award && <span class="inline-block mt-2 text-[10px] uppercase tracking-[0.16em] border border-[color:var(--color-ink)] px-2 py-0.5">{s.award}</span>}
+      </div>
+    ))}
+  </section>
+</Base>

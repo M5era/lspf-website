@@ -1,0 +1,76 @@
+---
+export const prerender = false;
+
+import Base from "@/layouts/Base.astro";
+import Hero from "@/components/Hero.astro";
+import PreviewBanner from "@/components/PreviewBanner.astro";
+import { getCurrentEdition, getWorkshops, getFinalistSingles } from "@/lib/loaders";
+
+const opts = { preview: true };
+const currentEdition = await getCurrentEdition(opts);
+const workshops = await getWorkshops(opts);
+const allSingles = await getFinalistSingles(2025, opts);
+const winnerLabels = ["Winner (1st place)", "2nd place", "3rd place"];
+const winners = winnerLabels
+  .map((label) => allSingles.find((f) => f.award === label))
+  .filter((f): f is NonNullable<typeof f> => Boolean(f));
+
+const fmtMonth = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-GB", { month: "long" });
+const startDay = new Date(currentEdition.startDate).getDate();
+const endDay = new Date(currentEdition.endDate).getDate();
+const month = fmtMonth(currentEdition.startDate);
+const year = currentEdition.year;
+---
+
+<Base title="Home (Preview)">
+  <PreviewBanner />
+  <Hero
+    image={currentEdition.heroImage}
+    eyebrow={`${startDay}–${endDay} ${month} ${year}`}
+    title={currentEdition.tagline}
+    subtitle="The second edition of Lisbon Street Photo Fest brings together photographers, enthusiasts, and curious minds from around the world."
+    ctaLabel="2026 Open Call — Submit"
+    ctaHref={currentEdition.openCallUrl}
+  />
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-20 lg:py-28">
+    <div class="grid gap-12 lg:grid-cols-[1fr_2fr] lg:gap-20 items-start">
+      <h2 class="h-display text-3xl sm:text-4xl">
+        Join us for the second edition.
+      </h2>
+      <p class="text-lg leading-relaxed text-[color:var(--color-ink)]/85">
+        {currentEdition.intro}
+      </p>
+    </div>
+  </section>
+
+  {
+    winners.length > 0 && (
+      <section class="border-t border-[color:var(--color-rule)]">
+        <div class="mx-auto max-w-[1400px] px-6 lg:px-12 py-20">
+          <div class="flex items-end justify-between mb-10">
+            <div>
+              <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-2">
+                2025 Open Call
+              </p>
+              <h2 class="h-display text-3xl sm:text-4xl">Winners &amp; finalists</h2>
+            </div>
+          </div>
+          <div class="grid gap-8 md:grid-cols-3">
+            {winners.map((w) => (
+              <div class="block">
+                <div class="overflow-hidden bg-black/5 mb-3">
+                  <img src={w.image.src} alt={w.image.alt} class="w-full h-auto object-cover aspect-[3/2]" loading="lazy" />
+                </div>
+                <p class="text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-muted)] mb-1">{w.award}</p>
+                <p class="text-base">{w.photographer}</p>
+                {w.caption && <p class="text-sm text-[color:var(--color-muted)] italic mt-1">{w.caption}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+</Base>

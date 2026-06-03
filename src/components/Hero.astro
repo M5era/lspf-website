@@ -1,0 +1,75 @@
+---
+import type { ImageRef } from "@/data/types";
+
+interface Props {
+  image: ImageRef;
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  /** When true, title/subtitle sit below the image (documentary style). */
+  belowImage?: boolean;
+  ctaLabel?: string;
+  ctaHref?: string;
+}
+
+const {
+  image,
+  eyebrow,
+  title,
+  subtitle,
+  belowImage = true,
+  ctaLabel,
+  ctaHref,
+} = Astro.props;
+---
+
+<section class="bg-[color:var(--color-paper)]">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-8">
+    <div class="w-full overflow-hidden">
+      <img
+        src={image.src}
+        alt={image.alt}
+        width={image.width}
+        height={image.height}
+        class="w-full h-auto object-cover"
+        loading="eager"
+        decoding="async"
+      />
+    </div>
+
+    {
+      (title || eyebrow || subtitle) && (
+        <div class="mt-10 mb-4 max-w-3xl">
+          {eyebrow && (
+            <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">
+              {eyebrow}
+            </p>
+          )}
+          {title && (
+            <h1 class="h-display text-4xl sm:text-5xl lg:text-6xl">{title}</h1>
+          )}
+          {subtitle && (
+            <p class="mt-5 text-lg sm:text-xl text-[color:var(--color-ink)]/80 leading-relaxed">
+              {subtitle}
+            </p>
+          )}
+          {ctaLabel && ctaHref && (
+            <div class="mt-7">
+              <a
+                href={ctaHref}
+                target={ctaHref.startsWith("http") ? "_blank" : undefined}
+                rel={
+                  ctaHref.startsWith("http") ? "noopener noreferrer" : undefined
+                }
+                class="inline-flex items-center gap-2 border border-[color:var(--color-ink)] px-5 py-2.5 text-sm hover:bg-[color:var(--color-ink)] hover:text-[color:var(--color-paper)] transition-colors"
+              >
+                {ctaLabel}
+                <span aria-hidden>→</span>
+              </a>
+            </div>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>

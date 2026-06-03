@@ -1,0 +1,38 @@
+---
+import { site } from "@/data/site";
+import NewsletterForm from "./NewsletterForm.astro";
+---
+
+<footer class="border-t border-[color:var(--color-rule)] mt-28">
+  <div class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16">
+    <div class="grid gap-12 md:grid-cols-2 items-start">
+      <div>
+        <h3 class="h-section text-2xl mb-3">Sign up to our Newsletter</h3>
+        <p class="text-[color:var(--color-muted)] max-w-md mb-6 leading-relaxed">
+          Be first. Pay less. Open calls, workshop tickets, and photowalks
+          sell out fast. Subscribers get early-bird discount codes and first
+          access.
+        </p>
+        <NewsletterForm />
+      </div>
+
+      <div class="md:text-right flex flex-col gap-4">
+        <p class="text-sm">© Lisbon Street Photo Fest, 2026</p>
+        <p class="text-sm text-[color:var(--color-muted)]">
+          A project of Associação 351 Foto
+        </p>
+        <div class="flex md:justify-end gap-6 text-sm">
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="link-quiet">Instagram</a
+          >
+          <a href={`mailto:${site.contactEmail}`} class="link-quiet">
+            {site.contactEmail}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

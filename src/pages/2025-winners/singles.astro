@@ -1,0 +1,94 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getFinalistSingles } from "@/lib/loaders";
+
+const all = await getFinalistSingles(2025);
+
+// Pull out the three winners (by award text). They appear at the top.
+const winnerOrder = ["Winner (1st place)", "2nd place", "3rd place"];
+const winners = winnerOrder
+  .map((label) => all.find((f) => f.award === label))
+  .filter((f): f is NonNullable<typeof f> => Boolean(f));
+const others = all.filter((f) => !winners.includes(f as any));
+---
+
+<Base
+  title="2025 Single Images — Finalists"
+  description="Finalists in the Single Images category, Lisbon Street Photo Fest 2025."
+>
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-8">
+    <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">
+      2025 Edition · Open Call Finalists
+    </p>
+    <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Single Images</h1>
+    <p class="mt-6 max-w-3xl text-lg text-[color:var(--color-ink)]/80">
+      Photographs selected by the 2025 jury from submissions across more than
+      forty countries. From thousands of submissions, three outstanding works
+      were awarded.
+    </p>
+  </section>
+
+  {
+    winners.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-16">
+        <h2 class="h-section text-2xl mb-8">Winners</h2>
+        <div class="grid gap-10 md:grid-cols-3">
+          {winners.map((w, idx) => (
+            <figure class="flex flex-col gap-3">
+              <div class="overflow-hidden bg-black/5">
+                <img
+                  src={w.image.src}
+                  alt={w.image.alt}
+                  class="w-full h-auto object-cover"
+                  loading={idx === 0 ? "eager" : "lazy"}
+                />
+              </div>
+              <figcaption>
+                <p class="text-[10px] uppercase tracking-[0.18em] text-[color:var(--color-muted)] mb-1">
+                  {w.award}
+                </p>
+                <p class="text-base">{w.photographer}</p>
+                {w.country && (
+                  <p class="text-sm text-[color:var(--color-muted)]">
+                    {w.country}
+                  </p>
+                )}
+                {w.caption && (
+                  <p class="text-sm text-[color:var(--color-muted)] italic mt-1">
+                    {w.caption}
+                  </p>
+                )}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-24 border-t border-[color:var(--color-rule)] pt-12">
+    <h2 class="h-section text-2xl mb-8">All finalists</h2>
+    <div class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        others.map((f) => (
+          <figure class="flex flex-col gap-2">
+            <div class="overflow-hidden bg-black/5">
+              <img
+                src={f.image.src}
+                alt={f.image.alt}
+                class="w-full h-auto object-cover"
+                loading="lazy"
+              />
+            </div>
+            <figcaption class="text-sm">
+              <p>{f.photographer}</p>
+              <p class="text-[color:var(--color-muted)]">
+                {f.caption ?? ""}
+              </p>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,36 @@
+---
+// Plain link to Ticket Tailor — opens in a new tab. No embed widget,
+// no popup. Visitor lands on the TT-hosted checkout page.
+//
+// The box office slug is set once on the Ticket Tailor account; the
+// per-event ID lives on the Workshop document in Sanity.
+const BOX_OFFICE = "lisbonstreetphotofest";
+
+interface Props {
+  eventId: string;
+  buttonLabel?: string;
+}
+const { eventId, buttonLabel = "Get tickets" } = Astro.props;
+
+const isPlaceholder = !eventId || eventId.startsWith("REPLACE_");
+const ticketsUrl = isPlaceholder
+  ? "#"
+  : `https://buytickets.at/${BOX_OFFICE}/${eventId}`;
+---
+
+{
+  isPlaceholder ? (
+    <span class="inline-flex items-center gap-2 text-sm text-[color:var(--color-muted)] italic">
+      Tickets coming soon
+    </span>
+  ) : (
+    <a
+      class="inline-flex items-center gap-2 rounded-full bg-[color:var(--color-ink)] text-[color:var(--color-paper)] px-5 py-2.5 text-sm font-medium hover:bg-[color:var(--color-accent)] transition-colors"
+      href={ticketsUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {buttonLabel} <span aria-hidden>↗</span>
+    </a>
+  )
+}

@@ -1,0 +1,67 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getFinalistSeries } from "@/lib/loaders";
+import type { FinalistSeries } from "@/data/types";
+
+export async function getStaticPaths() {
+  const series = await getFinalistSeries(2025);
+  return series.map((s) => ({ params: { slug: s.slug }, props: { series: s } }));
+}
+
+interface Props {
+  series: FinalistSeries;
+}
+
+const { series } = Astro.props;
+---
+
+<Base
+  title={`${series.seriesTitle} — ${series.photographer}`}
+  description={`${series.seriesTitle} by ${series.photographer} — finalist in the 2025 Open Call (Series).`}
+>
+  <article class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-24">
+    <header class="mb-12 max-w-3xl">
+      <p class="text-sm text-[color:var(--color-muted)] mb-2">
+        <a href="/2025-winners/series" class="link-quiet">← Series finalists</a>
+      </p>
+      <h1 class="h-display text-4xl sm:text-5xl mb-3">{series.seriesTitle}</h1>
+      <p class="text-xl text-[color:var(--color-ink)]/80">
+        {series.photographer}
+        {series.country && (
+          <span class="text-[color:var(--color-muted)]">, {series.country}</span>
+        )}
+      </p>
+      {
+        series.award && (
+          <p class="mt-4 inline-block border border-[color:var(--color-ink)] px-3 py-1 text-xs uppercase tracking-[0.16em]">
+            {series.award}
+          </p>
+        )
+      }
+    </header>
+
+    <div class="space-y-2 sm:space-y-4 mb-16">
+      {
+        series.images.map((img) => (
+          <figure>
+            <img
+              src={img.src}
+              alt={img.alt}
+              class="w-full h-auto"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))
+      }
+    </div>
+
+    {
+      series.statement && (
+        <div class="prose-festival max-w-3xl text-[color:var(--color-ink)]/85">
+          <p class="leading-relaxed text-lg">{series.statement}</p>
+        </div>
+      )
+    }
+  </article>
+</Base>

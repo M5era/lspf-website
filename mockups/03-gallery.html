@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LSPF — Minimal / Gallery (dark) mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --paper: #f2efea;
+    --muted: rgba(242, 239, 234, 0.55);
+    --rule: rgba(242, 239, 234, 0.12);
+    --hot: #d8c096;
+    --display: "Cormorant Garamond", "Times New Roman", serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--paper); font-family: var(--sans); font-weight: 300; font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  header { padding: 36px 0; }
+  .head-row { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .brand { font-family: var(--display); font-weight: 400; font-size: 22px; letter-spacing: 0.02em; }
+  .brand small { display: block; font-family: var(--sans); font-weight: 300; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  nav ul { list-style: none; display: flex; gap: 36px; font-size: 13px; letter-spacing: 0.06em; }
+  nav a { color: var(--muted); transition: color 0.3s; }
+  nav a:hover, nav a.active { color: var(--paper); }
+
+  /* HERO — single image, lots of air */
+  .hero { padding: 60px 0 120px; text-align: center; }
+  .hero .eyebrow { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); margin-bottom: 30px; }
+  .hero h1 { font-family: var(--display); font-weight: 300; font-size: clamp(48px, 6vw, 96px); line-height: 1.05; letter-spacing: -0.01em; max-width: 18ch; margin: 0 auto; }
+  .hero h1 em { font-style: italic; color: var(--hot); }
+  .hero p { font-size: 16px; color: var(--muted); margin-top: 30px; max-width: 48ch; margin-left: auto; margin-right: auto; }
+  .hero-img { margin: 80px 0 0; }
+  .hero-img img { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
+  .hero-img figcaption { font-family: var(--display); font-style: italic; font-size: 14px; color: var(--muted); margin-top: 14px; }
+  .hero .cta { display: inline-block; margin-top: 50px; padding: 14px 0; border-bottom: 1px solid var(--paper); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+  /* Section markers */
+  .section-marker { display: flex; align-items: center; gap: 16px; max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+  .section-marker .num { font-family: var(--display); font-style: italic; font-weight: 400; font-size: 18px; color: var(--hot); }
+  .section-marker .lbl { font-size: 10px; letter-spacing: 0.4em; text-transform: uppercase; color: var(--muted); }
+  .section-marker .line { flex: 1; height: 1px; background: var(--rule); }
+
+  /* Intro — sparse */
+  .intro { padding: 110px 0; border-top: 1px solid var(--rule); }
+  .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1100px; margin: 0 auto; align-items: start; }
+  .intro h2 { font-family: var(--display); font-weight: 300; font-size: 44px; line-height: 1.1; letter-spacing: -0.01em; }
+  .intro p { font-size: 17px; line-height: 1.8; color: var(--paper); opacity: 0.85; }
+
+  /* Winners */
+  .winners { padding: 100px 0; border-top: 1px solid var(--rule); }
+  .winners-head { text-align: center; margin-bottom: 80px; }
+  .winners-head h3 { font-family: var(--display); font-weight: 300; font-size: clamp(40px, 5vw, 72px); line-height: 1; letter-spacing: -0.01em; }
+  .winners-head h3 em { font-style: italic; color: var(--hot); }
+  .winners-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; }
+  .winner-card { text-align: center; }
+  .winner-card .place { font-family: var(--display); font-style: italic; font-size: 18px; color: var(--hot); margin-bottom: 22px; }
+  .winner-card img { aspect-ratio: 3 / 2; object-fit: cover; margin-bottom: 24px; }
+  .winner-card .name { font-family: var(--display); font-weight: 400; font-size: 22px; }
+  .winner-card .cap { font-family: var(--display); font-style: italic; font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* Activities — quiet list */
+  .activities { padding: 100px 0; border-top: 1px solid var(--rule); }
+  .activities .section-marker { padding: 0; margin-bottom: 60px; }
+  .activities-wrap { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  .act-row { display: grid; grid-template-columns: 1fr 1fr 1fr 100px; gap: 24px; padding: 32px 0; border-top: 1px solid var(--rule); align-items: baseline; transition: padding-left 0.3s; }
+  .act-row:hover { padding-left: 12px; }
+  .act-row:last-child { border-bottom: 1px solid var(--rule); }
+  .act-row .ttl { font-family: var(--display); font-weight: 400; font-size: 24px; letter-spacing: -0.005em; }
+  .act-row .ttl small { display: block; font-family: var(--sans); font-weight: 300; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .act-row .when, .act-row .where { font-size: 14px; color: var(--muted); }
+  .act-row .price { font-family: var(--display); font-style: italic; font-size: 22px; text-align: right; color: var(--hot); }
+
+  footer { padding: 100px 0 60px; border-top: 1px solid var(--rule); text-align: center; }
+  footer h4 { font-family: var(--display); font-style: italic; font-weight: 300; font-size: 36px; margin-bottom: 16px; }
+  footer p { font-size: 14px; color: var(--muted); max-width: 42ch; margin: 0 auto 30px; }
+  footer .email-form { display: inline-flex; gap: 0; border-bottom: 1px solid var(--paper); padding-bottom: 8px; min-width: 360px; max-width: 100%; }
+  footer .email-form input { flex: 1; background: transparent; color: var(--paper); border: 0; font-family: var(--sans); font-size: 14px; outline: none; }
+  footer .email-form input::placeholder { color: var(--muted); }
+  footer .email-form button { background: transparent; color: var(--paper); border: 0; font-family: var(--sans); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; padding-left: 24px; }
+  footer .meta { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-top: 56px; }
+
+  @media (max-width: 900px) {
+    .intro-grid, .winners-grid, .act-row { grid-template-columns: 1fr; gap: 32px; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap head-row">
+    <div class="brand">
+      Lisbon Street Photo Fest
+      <small>25 — 27 September 2026</small>
+    </div>
+    <nav><ul>
+      <li><a href="#" class="active">Index</a></li>
+      <li><a href="#">2026</a></li>
+      <li><a href="#">Programme</a></li>
+      <li><a href="#">Winners</a></li>
+      <li><a href="#">About</a></li>
+    </ul></nav>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <p class="eyebrow">Second edition</p>
+  <h1>Rooted in Lisbon. <em>Open to the world.</em></h1>
+  <p>Three days of street photography in the city's oldest neighborhoods. Exhibitions, talks, workshops and walks — for every photographer.</p>
+  <a href="#" class="cta">Submit to the 2026 Open Call</a>
+
+  <div class="hero-img">
+    <img src="https://picsum.photos/seed/lspf-gal-hero/2000/1250" alt="" />
+    <figcaption>Untitled — Mouraria, 2024. © Ana Ribeiro.</figcaption>
+  </div>
+</section>
+
+<div class="section-marker"><span class="num">i.</span><span class="lbl">The festival</span><span class="line"></span></div>
+
+<section class="intro">
+  <div class="intro-grid">
+    <h2>An annual gathering of street photographers in Lisbon.</h2>
+    <p>From 25–27 September 2026, we will meet in Lisbon for the second edition of Lisbon Street Photo Fest. A celebration of street photography that brings together photographers, enthusiasts and curious minds from around the world for three days at Faculdade de Belas-Artes — exhibitions, talks, workshops and walks across the city.</p>
+  </div>
+</section>
+
+<div class="section-marker"><span class="num">ii.</span><span class="lbl">2025 Open Call</span><span class="line"></span></div>
+
+<section class="winners">
+  <div class="wrap">
+    <div class="winners-head">
+      <h3>Winners <em>&amp;</em> finalists</h3>
+    </div>
+    <div class="winners-grid">
+      <div class="winner-card">
+        <p class="place">First place</p>
+        <img src="https://picsum.photos/seed/gal-winner1/900/600" alt="" />
+        <p class="name">Marika Poquet</p>
+        <p class="cap">"Harbour of Hustle"</p>
+      </div>
+      <div class="winner-card">
+        <p class="place">Second place</p>
+        <img src="https://picsum.photos/seed/gal-winner2/900/600" alt="" />
+        <p class="name">Latife Baudet</p>
+        <p class="cap">A child's curiosity</p>
+      </div>
+      <div class="winner-card">
+        <p class="place">Third place</p>
+        <img src="https://picsum.photos/seed/gal-winner3/900/600" alt="" />
+        <p class="name">Andrea Klausner</p>
+        <p class="cap">"Before the Parade"</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-marker"><span class="num">iii.</span><span class="lbl">Programme</span><span class="line"></span></div>
+
+<section class="activities">
+  <div class="activities-wrap">
+    <div class="act-row">
+      <div class="ttl">Street Essentials<small>Workshop · Maria Silva</small></div>
+      <div class="when">Fri 25 Sep · 10:00–17:00</div>
+      <div class="where">FBAUL, Lisboa</div>
+      <div class="price">€120</div>
+    </div>
+    <div class="act-row">
+      <div class="ttl">Alfama Photowalk<small>Photowalk · João Pereira</small></div>
+      <div class="when">Sat 26 Sep · 08:00–12:00</div>
+      <div class="where">Largo do Chafariz</div>
+      <div class="price">€25</div>
+    </div>
+    <div class="act-row">
+      <div class="ttl">After the Decisive Moment<small>Talk · Panel</small></div>
+      <div class="when">Sat 26 Sep · 18:00–19:30</div>
+      <div class="where">FBAUL Auditorium</div>
+      <div class="price">Free</div>
+    </div>
+    <div class="act-row">
+      <div class="ttl">Portfolio Reviews<small>One-on-one · Curators</small></div>
+      <div class="when">Sun 27 Sep · 11:00–17:00</div>
+      <div class="where">FBAUL Project Room</div>
+      <div class="price">€45</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h4>Be first. Pay less.</h4>
+    <p>Open calls, workshop tickets, and photowalks sell out fast. Subscribers get early-bird discount codes and first access.</p>
+    <form class="email-form" onsubmit="event.preventDefault();">
+      <input type="email" placeholder="your@email.com" />
+      <button type="submit">Sign up →</button>
+    </form>
+    <p class="meta">© Lisbon Street Photo Fest 2026 · Associação 351 Foto</p>
+  </div>
+</footer>
+
+</body>
+</html>

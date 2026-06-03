@@ -1,0 +1,32 @@
+---
+// Minimal Portable Text renderer for our content blocks (h2/h3/normal).
+// For richer formatting later, swap in `@portabletext/to-html-string`.
+interface Block {
+  _type: string;
+  style?: string;
+  children?: Array<{ _type: string; text: string; marks?: string[] }>;
+}
+interface Props {
+  blocks: Block[] | undefined | null;
+}
+const { blocks } = Astro.props;
+const text = (b: Block) =>
+  (b.children ?? [])
+    .filter((c) => c._type === "span")
+    .map((c) => c.text)
+    .join("");
+---
+
+{
+  (blocks ?? []).map((b) => {
+    if (b._type !== "block") return null;
+    const t = text(b);
+    if (b.style === "h2")
+      return <h2 class="h-section text-2xl mt-12 mb-4">{t}</h2>;
+    if (b.style === "h3")
+      return <h3 class="h-section text-xl mt-8 mb-3">{t}</h3>;
+    if (b.style === "blockquote")
+      return <blockquote class="border-l-2 border-[color:var(--color-ink)] pl-4 my-6 italic">{t}</blockquote>;
+    return <p class="leading-relaxed mb-4">{t}</p>;
+  })
+}

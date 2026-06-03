@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LSPF — Design mockups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #fafaf7; color: #111; font-family: "Inter", system-ui, sans-serif; font-size: 16px; line-height: 1.55; padding: 60px 32px; }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 36px; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .lede { color: #555; max-width: 60ch; margin-bottom: 48px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .card { display: block; background: #fff; border: 1px solid #e5e5e0; border-radius: 8px; overflow: hidden; text-decoration: none; color: inherit; transition: transform 0.15s, border-color 0.15s; }
+  .card:hover { transform: translateY(-2px); border-color: #111; }
+  .card iframe { width: 100%; height: 380px; border: 0; pointer-events: none; }
+  .card .body { padding: 24px; }
+  .card .num { color: #999; font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+  .card h2 { font-size: 22px; font-weight: 600; margin-bottom: 8px; }
+  .card .meta { font-size: 13px; color: #555; margin-bottom: 12px; }
+  .card p { font-size: 14px; color: #444; }
+  .card .open { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 500; color: #111; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>LSPF — Design mockups</h1>
+  <p class="lede">Four directions, each paired with the most fitting typography and color treatment. Open any one full-screen to evaluate. All use placeholder photography.</p>
+
+  <div class="grid">
+    <a class="card" href="./01-editorial.html" target="_blank">
+      <iframe src="./01-editorial.html" loading="lazy" sandbox="allow-same-origin"></iframe>
+      <div class="body">
+        <p class="num">01</p>
+        <h2>Editorial / Magazine</h2>
+        <p class="meta">Fraunces serif display · cream paper · drop caps · terracotta accent</p>
+        <p>Feels like a printed annual: serif headlines, italic ledes, two-column layouts, image captions in italic.</p>
+        <span class="open">Open full screen →</span>
+      </div>
+    </a>
+
+    <a class="card" href="./02-brutalist.html" target="_blank">
+      <iframe src="./02-brutalist.html" loading="lazy" sandbox="allow-same-origin"></iframe>
+      <div class="body">
+        <p class="num">02</p>
+        <h2>Bold / Brutalist</h2>
+        <p class="meta">Space Grotesk bold · monospace labels · red accent · oversized type</p>
+        <p>Loud, confident, contemporary-art-festival energy. Full-bleed hero with massive overlaid type, asymmetric grids.</p>
+        <span class="open">Open full screen →</span>
+      </div>
+    </a>
+
+    <a class="card" href="./03-gallery.html" target="_blank">
+      <iframe src="./03-gallery.html" loading="lazy" sandbox="allow-same-origin"></iframe>
+      <div class="body">
+        <p class="num">03</p>
+        <h2>Minimal / Gallery (dark)</h2>
+        <p class="meta">Cormorant serif · dark background · gold-leaf accent · airy spacing</p>
+        <p>High-end photographer-portfolio feel. Dark mode, light typography, generous whitespace — images do the work.</p>
+        <span class="open">Open full screen →</span>
+      </div>
+    </a>
+
+    <a class="card" href="./04-bspf-style.html" target="_blank">
+      <iframe src="./04-bspf-style.html" loading="lazy" sandbox="allow-same-origin"></iframe>
+      <div class="body">
+        <p class="num">04</p>
+        <h2>BSPF-style</h2>
+        <p class="meta">Inter sans · white · terracotta accent · carousel hero · news cards</p>
+        <p>Closest to BSPF's visual language: rotating photo hero with attribution, news/blog grid, card-based winners and activities.</p>
+        <span class="open">Open full screen →</span>
+      </div>
+    </a>
+  </div>
+</div>
+</body>
+</html>

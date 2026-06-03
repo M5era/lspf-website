@@ -1,0 +1,59 @@
+---
+import Base from "@/layouts/Base.astro";
+import { getFinalistSeries } from "@/lib/loaders";
+
+const series2025 = await getFinalistSeries(2025);
+---
+
+<Base
+  title="2025 Series — Finalists"
+  description="Finalists in the Series category, Lisbon Street Photo Fest 2025."
+>
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-8">
+    <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">
+      2025 Edition · Open Call Finalists
+    </p>
+    <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Series</h1>
+    <p class="mt-6 max-w-2xl text-lg text-[color:var(--color-ink)]/80">
+      Three bodies of work — selected by the 2025 jury for their cohesion of
+      vision across multiple images. Click any series to view the full
+      sequence with the artist's statement.
+    </p>
+  </section>
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pb-24 grid gap-12 md:grid-cols-2 lg:grid-cols-3">
+    {
+      series2025.map((s) => (
+        <a
+          href={`/2025-winners/series/${s.slug}`}
+          class="group block"
+        >
+          {s.images[0] && (
+            <div class="overflow-hidden bg-black/5 mb-4">
+              <img
+                src={s.images[0].src}
+                alt={s.images[0].alt}
+                class="w-full h-auto object-cover aspect-[3/2] transition-transform duration-500 group-hover:scale-[1.02]"
+                loading="lazy"
+              />
+            </div>
+          )}
+          <div class="flex items-baseline justify-between gap-4">
+            <div>
+              <h2 class="h-display text-xl mb-1">{s.seriesTitle}</h2>
+              <p class="text-sm text-[color:var(--color-muted)]">
+                {s.photographer}
+                {s.country && `, ${s.country}`}
+              </p>
+            </div>
+            {s.award && (
+              <span class="shrink-0 text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-ink)] border border-[color:var(--color-ink)] px-2 py-0.5">
+                {s.award}
+              </span>
+            )}
+          </div>
+        </a>
+      ))
+    }
+  </section>
+</Base>

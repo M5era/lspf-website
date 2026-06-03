@@ -1,0 +1,103 @@
+---
+import { site } from "@/data/site";
+
+const pathname = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isActive = (href: string) => {
+  if (href.startsWith("http")) return false;
+  const normalized = href.replace(/\/$/, "") || "/";
+  return pathname === normalized || pathname.startsWith(normalized + "/");
+};
+
+const logoUrl =
+  "https://format.creatorcdn.com/07d76fef-7923-45d8-af7f-d7f464fd7bac/0/0/0/0,0,2000,1575,960,1575/0-0-0/3b5b3074-d587-4e8d-8196-db9374b2cd5c/1/1/logo2.png?fjkss=exp=2095985325~hmac=99cb97fc95d7b9313ec544a3c640c05be066833234b80693f427b2153b682e1f";
+---
+
+<header class="bg-[color:var(--color-paper)]">
+  <div class="mx-auto max-w-[1200px] px-6 lg:px-10 pt-8 pb-5 flex flex-col items-center gap-6">
+    <a href="/" class="block">
+      <img
+        src={logoUrl}
+        alt="Lisbon Street Photo Fest"
+        class="h-28 sm:h-32 w-auto"
+        loading="eager"
+      />
+    </a>
+
+    <p
+      class="uppercase tracking-[0.22em] text-[11px] text-[color:var(--color-muted)]"
+    >
+      25 – 27 September 2026 · Lisboa
+    </p>
+
+    <nav
+      class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[15px] pt-1"
+    >
+      {
+        site.nav.map((item) => {
+          if (item.children) {
+            const childActive = item.children.some((c) => isActive(c.href));
+            return (
+              <div class="relative group">
+                <button
+                  type="button"
+                  class:list={[
+                    "link-quiet inline-flex items-center gap-1",
+                    childActive
+                      ? "border-b border-[color:var(--color-ink)] pb-0.5"
+                      : "text-[color:var(--color-ink)]/85 hover:text-[color:var(--color-ink)]",
+                  ]}
+                  aria-haspopup="true"
+                >
+                  {item.label}
+                  <span class="text-[10px] opacity-60 transition-transform group-hover:rotate-180">
+                    ▾
+                  </span>
+                </button>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-40 hidden group-hover:block group-focus-within:block"
+                >
+                  <div class="bg-[color:var(--color-paper)] border border-[color:var(--color-rule)] shadow-sm py-2 min-w-[240px]">
+                    {item.children.map((c) => {
+                      const active = isActive(c.href);
+                      return (
+                        <a
+                          href={c.href}
+                          class:list={[
+                            "block px-4 py-2 text-sm whitespace-nowrap",
+                            active
+                              ? "bg-black/5 text-[color:var(--color-ink)]"
+                              : "text-[color:var(--color-ink)]/85 hover:bg-black/5",
+                          ]}
+                        >
+                          {c.label}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          const external = item.href!.startsWith("http");
+          const active = isActive(item.href!);
+          return (
+            <a
+              href={item.href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              class:list={[
+                "link-quiet",
+                active
+                  ? "border-b border-[color:var(--color-ink)] pb-0.5"
+                  : "text-[color:var(--color-ink)]/85 hover:text-[color:var(--color-ink)]",
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })
+      }
+    </nav>
+  </div>
+  <div class="border-b border-[color:var(--color-rule)]"></div>
+</header>

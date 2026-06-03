@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>LSPF — Bold/Brutalist mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #ffffff;
+    --ink: #0c0c0c;
+    --hot: #ff3a1f;
+    --rule: #000;
+    --muted: #555;
+    --sans: "Space Grotesk", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.45; -webkit-font-smoothing: antialiased; }
+  img { display: block; max-width: 100%; height: auto; }
+  a { color: inherit; text-decoration: none; }
+  .wrap { max-width: 100%; padding: 0 24px; }
+  .label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; }
+
+  /* Header strip — utilitarian */
+  header { position: sticky; top: 0; background: var(--paper); border-bottom: 2px solid var(--ink); padding: 14px 24px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+  header .brand { font-weight: 700; letter-spacing: -0.04em; font-size: 18px; }
+  header nav ul { list-style: none; display: flex; gap: 22px; font-family: var(--mono); font-size: 13px; }
+  header nav a { padding-bottom: 2px; border-bottom: 2px solid transparent; }
+  header nav a:hover { border-bottom-color: var(--hot); color: var(--hot); }
+  header .when { background: var(--hot); color: #fff; padding: 6px 12px; font-family: var(--mono); font-size: 12px; }
+
+  /* HERO — full bleed, oversized text overlaid */
+  .hero { position: relative; height: 88vh; min-height: 600px; overflow: hidden; background: var(--ink); }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.1) saturate(1.05); }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.05) 0%, rgba(0,0,0,0.55) 100%); }
+  .hero-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 32px 24px; color: #fff; }
+  .hero-meta { display: flex; justify-content: space-between; align-items: start; }
+  .hero-meta .ticker { font-family: var(--mono); font-size: 12px; background: var(--hot); padding: 4px 10px; }
+  .hero h1 { font-weight: 700; font-size: clamp(72px, 13vw, 220px); line-height: 0.84; letter-spacing: -0.04em; text-transform: uppercase; }
+  .hero h1 .accent { color: var(--hot); }
+  .hero-foot { display: flex; justify-content: space-between; align-items: end; gap: 32px; flex-wrap: wrap; }
+  .hero-foot p { max-width: 38ch; font-size: 16px; opacity: 0.92; }
+  .hero-foot .cta { background: var(--hot); color: #fff; padding: 18px 28px; font-family: var(--mono); font-size: 14px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+  .hero-foot .cta:hover { background: #fff; color: var(--ink); }
+
+  /* Ticker bar */
+  .ticker-bar { background: var(--ink); color: var(--paper); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); padding: 16px 24px; font-family: var(--mono); font-size: 14px; display: flex; gap: 40px; overflow: hidden; white-space: nowrap; }
+  .ticker-bar span { display: inline-flex; align-items: center; gap: 14px; }
+  .ticker-bar span::before { content: "●"; color: var(--hot); }
+
+  /* Intro — asymmetric */
+  .intro { padding: 100px 24px; border-bottom: 2px solid var(--ink); }
+  .intro-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; align-items: start; max-width: 1500px; margin: 0 auto; }
+  .intro h2 { font-weight: 700; font-size: clamp(40px, 5vw, 72px); line-height: 0.95; letter-spacing: -0.03em; text-transform: uppercase; }
+  .intro h2 .accent { color: var(--hot); }
+  .intro p { font-size: 22px; line-height: 1.4; max-width: 52ch; }
+
+  /* Winners — staggered grid */
+  .winners { padding: 80px 24px; border-bottom: 2px solid var(--ink); }
+  .winners h3 { font-weight: 700; font-size: clamp(48px, 7vw, 110px); line-height: 0.9; letter-spacing: -0.04em; text-transform: uppercase; margin-bottom: 56px; }
+  .winners h3 .accent { color: var(--hot); }
+  .award-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
+  .award { position: relative; }
+  .award.one { grid-column: 1 / 6; grid-row: 1 / 3; }
+  .award.two { grid-column: 6 / 10; grid-row: 1 / 2; }
+  .award.three { grid-column: 9 / 13; grid-row: 2 / 3; padding-top: 60px; }
+  .award img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .award .tag { position: absolute; top: 12px; left: 12px; background: var(--hot); color: #fff; padding: 4px 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; }
+  .award .name { font-weight: 700; font-size: 22px; margin-top: 16px; letter-spacing: -0.02em; }
+  .award .cap { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+  /* Activities */
+  .activities { padding: 100px 24px; }
+  .act-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 40px; max-width: 1500px; margin-left: auto; margin-right: auto; }
+  .act-head h3 { font-weight: 700; font-size: clamp(40px, 5vw, 88px); line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; }
+  .act-head a { font-family: var(--mono); font-size: 13px; border-bottom: 2px solid currentColor; padding-bottom: 2px; }
+  .act-list { max-width: 1500px; margin: 0 auto; border-top: 2px solid var(--ink); }
+  .act-row { display: grid; grid-template-columns: 80px 1.6fr 1.2fr 100px 160px; gap: 24px; padding: 26px 0; border-bottom: 2px solid var(--ink); align-items: center; transition: background 0.15s; }
+  .act-row:hover { background: var(--ink); color: var(--paper); }
+  .act-row .num { font-family: var(--mono); font-weight: 500; font-size: 16px; }
+  .act-row .ttl { font-weight: 700; font-size: 22px; letter-spacing: -0.02em; text-transform: uppercase; }
+  .act-row .meta { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .act-row:hover .meta { color: rgba(255,255,255,0.7); }
+  .act-row .price { font-weight: 700; font-size: 24px; }
+  .act-row .price.free { color: var(--hot); }
+  .act-row .cta { background: var(--hot); color: #fff; padding: 10px 14px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; text-align: center; }
+
+  footer { background: var(--ink); color: var(--paper); padding: 80px 24px; }
+  footer .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 56px; max-width: 1500px; margin: 0 auto; }
+  footer h4 { font-weight: 700; font-size: 56px; line-height: 0.92; letter-spacing: -0.03em; text-transform: uppercase; margin-bottom: 20px; }
+  footer h4 .accent { color: var(--hot); }
+  footer p { font-size: 16px; opacity: 0.8; max-width: 38ch; margin-bottom: 24px; }
+  footer .email-form { display: flex; gap: 0; border: 2px solid var(--paper); }
+  footer .email-form input { flex: 1; background: transparent; color: var(--paper); border: 0; padding: 16px 18px; font-family: var(--mono); font-size: 13px; outline: none; }
+  footer .email-form button { background: var(--paper); color: var(--ink); border: 0; padding: 16px 28px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; }
+  footer .meta { font-family: var(--mono); font-size: 12px; opacity: 0.6; line-height: 1.7; }
+
+  @media (max-width: 900px) {
+    .intro-grid, footer .grid { grid-template-columns: 1fr; gap: 32px; }
+    .award-grid { grid-template-columns: 1fr; }
+    .award.one, .award.two, .award.three { grid-column: 1 / -1; padding-top: 0; }
+    .act-row { grid-template-columns: 1fr; gap: 8px; }
+    header nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">LSPF / 2026</div>
+  <nav><ul>
+    <li><a href="#">Open Call</a></li>
+    <li><a href="#">Activities</a></li>
+    <li><a href="#">2025</a></li>
+    <li><a href="#">Winners</a></li>
+    <li><a href="#">About</a></li>
+  </ul></nav>
+  <div class="when">25–27.09.2026</div>
+</header>
+
+<section class="hero">
+  <img src="https://picsum.photos/seed/lspf-br-hero/2000/1300" alt="" />
+  <div class="hero-content">
+    <div class="hero-meta">
+      <span class="label" style="color:#fff;">Issue 02 — Second edition</span>
+      <span class="ticker">● Open Call closes 31 May 2026</span>
+    </div>
+    <div>
+      <h1>Rooted<br/>in Lisbon.<br/>Open to<br/>the <span class="accent">world.</span></h1>
+      <div class="hero-foot" style="margin-top:32px;">
+        <p>Three days of street photography in Lisbon. Exhibitions, talks, workshops, photowalks, portfolio reviews — for every photographer.</p>
+        <a href="#" class="cta">Submit your work →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker-bar">
+  <span>Open Call deadline 31.05.2026</span>
+  <span>Festival 25–27.09.2026</span>
+  <span>Faculdade de Belas-Artes, Lisboa</span>
+  <span>Free &amp; open to the public</span>
+</div>
+
+<section class="intro">
+  <div class="intro-grid">
+    <h2>An <span class="accent">annual</span> for street photography.</h2>
+    <p>From 25–27 September 2026, we will gather in Lisbon for the second edition of Lisbon Street Photo Fest. A celebration across cultures, continents and emotions — three days of exhibitions, talks, workshops and walks set in the city's oldest neighborhoods and its most generous light.</p>
+  </div>
+</section>
+
+<section class="winners">
+  <h3>2025<br/>winners<br/><span class="accent">&amp; finalists →</span></h3>
+  <div class="award-grid">
+    <div class="award one">
+      <span class="tag">1st place</span>
+      <img src="https://picsum.photos/seed/br-winner1/1200/900" alt="" />
+      <p class="name">Marika Poquet</p>
+      <p class="cap">"Harbour of Hustle"</p>
+    </div>
+    <div class="award two">
+      <span class="tag">2nd place</span>
+      <img src="https://picsum.photos/seed/br-winner2/1200/900" alt="" />
+      <p class="name">Latife Baudet</p>
+      <p class="cap">"LatifeBaudet1"</p>
+    </div>
+    <div class="award three">
+      <span class="tag">3rd place</span>
+      <img src="https://picsum.photos/seed/br-winner3/1200/900" alt="" />
+      <p class="name">Andrea Klausner</p>
+      <p class="cap">"Before the Parade"</p>
+    </div>
+  </div>
+</section>
+
+<section class="activities">
+  <div class="act-head">
+    <h3>Activities</h3>
+    <a href="#">All →</a>
+  </div>
+  <div class="act-list">
+    <div class="act-row">
+      <span class="num">01</span>
+      <div><div class="ttl">Street Essentials</div></div>
+      <div class="meta">FRI 25.09 · 10:00 — 17:00 · Maria Silva</div>
+      <div class="price">€120</div>
+      <a class="cta" href="#">Get tickets</a>
+    </div>
+    <div class="act-row">
+      <span class="num">02</span>
+      <div><div class="ttl">Alfama Photowalk</div></div>
+      <div class="meta">SAT 26.09 · 08:00 — 12:00 · João Pereira</div>
+      <div class="price">€25</div>
+      <a class="cta" href="#">Get tickets</a>
+    </div>
+    <div class="act-row">
+      <span class="num">03</span>
+      <div><div class="ttl">After the Decisive Moment</div></div>
+      <div class="meta">SAT 26.09 · 18:00 — 19:30 · Panel</div>
+      <div class="price free">Free</div>
+      <a class="cta" href="#">Reserve</a>
+    </div>
+    <div class="act-row">
+      <span class="num">04</span>
+      <div><div class="ttl">Portfolio Reviews</div></div>
+      <div class="meta">SUN 27.09 · 11:00 — 17:00 · Rotating panel</div>
+      <div class="price">€45</div>
+      <a class="cta" href="#">Get tickets</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="grid">
+    <div>
+      <h4>Be first.<br/>Pay <span class="accent">less.</span></h4>
+      <p>Open calls, workshop tickets, and photowalks sell out fast. Subscribers get early-bird discount codes and first access.</p>
+      <form class="email-form" onsubmit="event.preventDefault();">
+        <input type="email" placeholder="your@email.com" />
+        <button type="submit">Sign up</button>
+      </form>
+    </div>
+    <div class="meta">
+      © Lisbon Street Photo Fest, 2026<br/>
+      Associação 351 Foto<br/>
+      Faculdade de Belas-Artes, Lisboa<br/><br/>
+      hello@lisbonstreet.photo<br/>
+      @lisbonstreet.photo
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+---
+import type { ImageRef } from "@/data/types";
+
+interface Props {
+  items: { image: ImageRef; caption?: string; subtitle?: string }[];
+  columns?: 2 | 3 | 4;
+}
+
+const { items, columns = 3 } = Astro.props;
+
+const colClass =
+  columns === 4
+    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+    : columns === 2
+      ? "grid-cols-1 sm:grid-cols-2"
+      : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+---
+
+<div class={`grid gap-4 sm:gap-6 ${colClass}`}>
+  {
+    items.map((it) => (
+      <figure class="flex flex-col gap-2">
+        <div class="overflow-hidden rounded bg-black/5">
+          <img
+            src={it.image.src}
+            alt={it.image.alt}
+            class="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.02]"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+        {(it.caption || it.subtitle) && (
+          <figcaption class="text-sm">
+            {it.caption && (
+              <span class="block text-[color:var(--color-ink)]">{it.caption}</span>
+            )}
+            {it.subtitle && (
+              <span class="block text-[color:var(--color-muted)]">{it.subtitle}</span>
+            )}
+          </figcaption>
+        )}
+      </figure>
+    ))
+  }
+</div>

@@ -1,0 +1,171 @@
+---
+import Base from "@/layouts/Base.astro";
+import Hero from "@/components/Hero.astro";
+import PersonGrid from "@/components/PersonGrid.astro";
+import SponsorWall from "@/components/SponsorWall.astro";
+import {
+  getAllEditions,
+  getExhibitions,
+  getPeople,
+  getSponsors,
+} from "@/lib/loaders";
+
+const editions = await getAllEditions();
+const ed2025 = editions.find((e) => e.year === 2025);
+
+const [
+  headliners,
+  workshops,
+  reviewers,
+  photowalks,
+  talks,
+  jury,
+  sponsors,
+  exhibitions2025,
+] = await Promise.all([
+  getPeople(2025, "headliner"),
+  getPeople(2025, "workshop"),
+  getPeople(2025, "portfolio-review"),
+  getPeople(2025, "photowalk"),
+  getPeople(2025, "spotlight-talk"),
+  getPeople(2025, "jury"),
+  getSponsors(2025),
+  getExhibitions(2025),
+]);
+---
+
+<Base title="2025 Edition" ogImage={ed2025?.heroImage?.src}>
+  {
+    ed2025 && (
+      <Hero
+        image={ed2025.heroImage}
+        eyebrow="The first edition · 26–28 September 2025"
+        title="2025 Edition"
+        subtitle="Three days of street photography in Lisbon."
+      />
+    )
+  }
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-20">
+    <div class="prose-festival max-w-3xl text-[color:var(--color-ink)]/85 text-lg leading-relaxed">
+      <p>
+        For our first edition, we brought together a wide range of voices from
+        the street photography world — from internationally recognised names to
+        emerging photographers and active community members.
+      </p>
+      <p class="mt-4">
+        In 2025 we were honoured to collaborate with and welcome guests such
+        as <strong>Alex Webb and Rebecca Norris-Webb, Myriam Boulos, Gustavo
+        Minas, Nikita Teryoshin, Julia Coddington, Matt Stuart, and Phil
+        Penman</strong>, among many others. These guests took part as our Open
+        Call jurors, headliner and spotlight talks, led workshops, portfolio
+        reviews, and joined photowalks throughout the weekend.
+      </p>
+      <p class="mt-4">
+        <strong>In May 2026, we will announce our programme line-up for our
+        second edition, happening September 25–27, 2026.</strong>
+      </p>
+    </div>
+  </section>
+
+  {
+    headliners.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Headliners</h2>
+        <PersonGrid people={headliners} columns={4} />
+      </section>
+    )
+  }
+
+  {
+    workshops.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Workshops</h2>
+        <PersonGrid people={workshops} columns={4} />
+      </section>
+    )
+  }
+
+  {
+    reviewers.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Portfolio Reviews</h2>
+        <PersonGrid people={reviewers} columns={4} />
+      </section>
+    )
+  }
+
+  {
+    photowalks.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Photowalks</h2>
+        <PersonGrid people={photowalks} columns={4} />
+      </section>
+    )
+  }
+
+  {
+    talks.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Spotlight Talks</h2>
+        <PersonGrid people={talks} columns={4} />
+      </section>
+    )
+  }
+
+  {
+    jury.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-3xl mb-10">Open Call Jury</h2>
+        <PersonGrid people={jury} columns={4} />
+      </section>
+    )
+  }
+
+  <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+    <h2 class="h-section text-3xl mb-2">Winners &amp; finalists</h2>
+    <p class="text-[color:var(--color-muted)] mb-10">
+      The 2025 Open Call results across the two categories.
+    </p>
+    <div class="grid gap-4 sm:grid-cols-3 max-w-4xl">
+      <a
+        href="/2025-winners/singles"
+        class="group block border border-[color:var(--color-rule)] hover:border-[color:var(--color-ink)] p-6 transition-colors"
+      >
+        <p class="h-section text-lg mb-1">Single Images</p>
+        <p class="text-sm text-[color:var(--color-muted)]">
+          Finalists in the single-image category →
+        </p>
+      </a>
+      <a
+        href="/2025-winners/series"
+        class="group block border border-[color:var(--color-rule)] hover:border-[color:var(--color-ink)] p-6 transition-colors"
+      >
+        <p class="h-section text-lg mb-1">Series</p>
+        <p class="text-sm text-[color:var(--color-muted)]">
+          Finalists in the series category →
+        </p>
+      </a>
+      <a
+        href="/2025-winners/exhibitions"
+        class="group block border border-[color:var(--color-rule)] hover:border-[color:var(--color-ink)] p-6 transition-colors"
+      >
+        <p class="h-section text-lg mb-1">Exhibitions</p>
+        <p class="text-sm text-[color:var(--color-muted)]">
+          The two festival exhibitions →
+        </p>
+      </a>
+    </div>
+  </section>
+
+  {
+    sponsors.length > 0 && (
+      <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-20 border-t border-[color:var(--color-rule)]">
+        <h2 class="h-section text-2xl mb-10 text-center">
+          A thank you to our 2025 sponsors and partners
+        </h2>
+        <SponsorWall sponsors={sponsors} />
+      </section>
+    )
+  }
+</Base>

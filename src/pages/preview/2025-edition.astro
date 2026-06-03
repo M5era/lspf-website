@@ -1,0 +1,77 @@
+---
+export const prerender = false;
+
+import Base from "@/layouts/Base.astro";
+import Hero from "@/components/Hero.astro";
+import PersonGrid from "@/components/PersonGrid.astro";
+import SponsorWall from "@/components/SponsorWall.astro";
+import PreviewBanner from "@/components/PreviewBanner.astro";
+import {
+  getAllEditions,
+  getExhibitions,
+  getPeople,
+  getSponsors,
+} from "@/lib/loaders";
+
+const opts = { preview: true };
+const editions = await getAllEditions(opts);
+const ed2025 = editions.find((e) => e.year === 2025);
+
+const [headliners, workshops, reviewers, photowalks, talks, jury, sponsors] = await Promise.all([
+  getPeople(2025, "headliner", opts),
+  getPeople(2025, "workshop", opts),
+  getPeople(2025, "portfolio-review", opts),
+  getPeople(2025, "photowalk", opts),
+  getPeople(2025, "spotlight-talk", opts),
+  getPeople(2025, "jury", opts),
+  getSponsors(2025, opts),
+]);
+---
+
+<Base title="2025 Edition (Preview)">
+  <PreviewBanner />
+  {ed2025 && <Hero image={ed2025.heroImage} eyebrow="The first edition · 26–28 September 2025" title="2025 Edition" subtitle="Three days of street photography in Lisbon." />}
+
+  {headliners.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Headliners</h2>
+      <PersonGrid people={headliners} columns={4} />
+    </section>
+  )}
+  {workshops.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Workshops</h2>
+      <PersonGrid people={workshops} columns={4} />
+    </section>
+  )}
+  {reviewers.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Portfolio Reviews</h2>
+      <PersonGrid people={reviewers} columns={4} />
+    </section>
+  )}
+  {photowalks.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Photowalks</h2>
+      <PersonGrid people={photowalks} columns={4} />
+    </section>
+  )}
+  {talks.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Spotlight Talks</h2>
+      <PersonGrid people={talks} columns={4} />
+    </section>
+  )}
+  {jury.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-16 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-3xl mb-10">Open Call Jury</h2>
+      <PersonGrid people={jury} columns={4} />
+    </section>
+  )}
+  {sponsors.length > 0 && (
+    <section class="mx-auto max-w-[1400px] px-6 lg:px-12 py-20 border-t border-[color:var(--color-rule)]">
+      <h2 class="h-section text-2xl mb-10 text-center">2025 sponsors and partners</h2>
+      <SponsorWall sponsors={sponsors} />
+    </section>
+  )}
+</Base>

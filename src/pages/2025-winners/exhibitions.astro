@@ -1,0 +1,64 @@
+---
+import Base from "@/layouts/Base.astro";
+import ImageGrid from "@/components/ImageGrid.astro";
+import { getExhibitions } from "@/lib/loaders";
+
+const exhibitions2025 = await getExhibitions(2025);
+
+const fmtDate = (iso?: string) =>
+  iso
+    ? new Date(iso).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+      })
+    : "";
+---
+
+<Base
+  title="2025 Exhibitions"
+  description="Exhibitions during Lisbon Street Photo Fest 2025."
+>
+  <section class="mx-auto max-w-7xl px-6 lg:px-10 pt-20 pb-12">
+    <p class="uppercase tracking-[0.2em] text-xs text-[color:var(--color-muted)] mb-4">
+      2025 Edition
+    </p>
+    <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Exhibitions</h1>
+  </section>
+
+  <section class="mx-auto max-w-7xl px-6 lg:px-10 pb-24 space-y-24">
+    {
+      exhibitions2025.map((ex) => (
+        <article id={ex.slug}>
+          <header class="grid gap-8 md:grid-cols-[2fr_1fr] mb-8">
+            <div class="overflow-hidden rounded bg-black/5">
+              <img
+                src={ex.cover.src}
+                alt={ex.cover.alt}
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div class="flex flex-col gap-4">
+              <h2 class="h-display text-3xl sm:text-4xl">{ex.title}</h2>
+              {ex.venue && (
+                <p class="text-[color:var(--color-muted)]">{ex.venue}</p>
+              )}
+              {ex.openingDate && (
+                <p class="text-sm text-[color:var(--color-muted)]">
+                  {fmtDate(ex.openingDate)} – {fmtDate(ex.closingDate)}
+                </p>
+              )}
+              <p class="leading-relaxed">{ex.description}</p>
+            </div>
+          </header>
+          {ex.gallery && ex.gallery.length > 0 && (
+            <ImageGrid
+              items={ex.gallery.map((img) => ({ image: img }))}
+              columns={3}
+            />
+          )}
+        </article>
+      ))
+    }
+  </section>
+</Base>
