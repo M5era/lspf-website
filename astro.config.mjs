@@ -9,7 +9,7 @@ export default defineConfig({
   site: "https://lspf-2026.pages.dev",
   // Hybrid: most pages stay prerendered (static, edge-served), only
   // /preview/* opts into SSR for live draft preview.
-  output: "static",
+  output: "hybrid",
   adapter: cloudflare({ imageService: "passthrough" }),
   integrations: [sitemap()],
   vite: {
