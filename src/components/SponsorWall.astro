@@ -5,40 +5,84 @@ interface Props {
   sponsors: Sponsor[];
 }
 const { sponsors } = Astro.props;
+
+const isHeadline = (s: Sponsor) =>
+  !!(
+    s.tier?.toLowerCase().includes("headline") ||
+    s.tier?.toLowerCase().includes("presenter")
+  );
+
+const headline = sponsors.find(isHeadline);
+const rest = sponsors.filter((s) => !isHeadline(s));
 ---
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-12 items-center">
-  {
-    sponsors.map((s) => {
-      const inner = (
-        <>
-          {s.logo && (
+{
+  headline && (
+    <div class="text-center mb-16 sm:mb-20">
+      <p class="text-[11px] uppercase tracking-[0.22em] text-[color:var(--color-muted)] mb-6">
+        Festival presented by
+      </p>
+      {headline.url ? (
+        <a
+          href={headline.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-block"
+        >
+          {headline.logo && (
             <img
-              src={s.logo.src}
-              alt={s.logo.alt}
-              class="max-h-16 w-auto object-contain mx-auto opacity-70 group-hover:opacity-100 transition-opacity"
+              src={headline.logo.src}
+              alt={headline.logo.alt}
+              class="max-h-16 sm:max-h-20 w-auto object-contain mx-auto opacity-90 group-hover:opacity-100 transition-opacity"
               loading="lazy"
             />
           )}
-          {s.tier && (
-            <p class="mt-3 text-[10px] uppercase tracking-[0.18em] text-center text-[color:var(--color-muted)]">
-              {s.tier}
-            </p>
-          )}
-        </>
-      );
-      return s.url ? (
+        </a>
+      ) : (
+        headline.logo && (
+          <img
+            src={headline.logo.src}
+            alt={headline.logo.alt}
+            class="max-h-16 sm:max-h-20 w-auto object-contain mx-auto"
+            loading="lazy"
+          />
+        )
+      )}
+    </div>
+  )
+}
+
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-8 sm:gap-x-12 gap-y-14 sm:gap-y-20 items-center">
+  {
+    rest.map((s) =>
+      s.url ? (
         <a
           href={s.url}
           target="_blank"
           rel="noopener noreferrer"
           class="group block text-center"
         >
-          {inner}
+          {s.logo && (
+            <img
+              src={s.logo.src}
+              alt={s.logo.alt}
+              class="max-h-14 sm:max-h-20 w-auto object-contain mx-auto opacity-80 group-hover:opacity-100 transition-opacity"
+              loading="lazy"
+            />
+          )}
         </a>
       ) : (
-        <div class="group text-center">{inner}</div>
-      );
-    })
+        <div class="group text-center">
+          {s.logo && (
+            <img
+              src={s.logo.src}
+              alt={s.logo.alt}
+              class="max-h-14 sm:max-h-20 w-auto object-contain mx-auto opacity-80"
+              loading="lazy"
+            />
+          )}
+        </div>
+      ),
+    )
   }
 </div>

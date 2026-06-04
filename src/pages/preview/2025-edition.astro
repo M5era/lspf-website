@@ -6,6 +6,7 @@ import Hero from "@/components/Hero.astro";
 import PersonGrid from "@/components/PersonGrid.astro";
 import SponsorWall from "@/components/SponsorWall.astro";
 import PreviewBanner from "@/components/PreviewBanner.astro";
+import VisualEditing from "@/components/VisualEditing.astro";
 import {
   getAllEditions,
   getExhibitions,
@@ -30,6 +31,7 @@ const [headliners, workshops, reviewers, photowalks, talks, jury, sponsors] = aw
 
 <Base title="2025 Edition (Preview)">
   <PreviewBanner />
+  <VisualEditing />
   {ed2025 && <Hero image={ed2025.heroImage} eyebrow="The first edition · 26–28 September 2025" title="2025 Edition" subtitle="Three days of street photography in Lisbon." />}
 
   {headliners.length > 0 && (

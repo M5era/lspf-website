@@ -58,29 +58,5 @@ export default defineType({
       title: "Open Call deadline",
       type: "date",
     }),
-    defineField({
-      name: "workshops",
-      title: "Workshops / photowalks / talks",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "workshop" }] }],
-    }),
-    defineField({
-      name: "exhibitions",
-      title: "Exhibitions",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "exhibition" }] }],
-    }),
-    defineField({
-      name: "finalistsSingles",
-      title: "Finalists — Singles",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "finalistSingle" }] }],
-    }),
-    defineField({
-      name: "finalistsSeries",
-      title: "Finalists — Series",
-      type: "array",
-      of: [{ type: "reference", to: [{ type: "finalistSeries" }] }],
-    }),
   ],
 });

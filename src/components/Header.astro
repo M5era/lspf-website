@@ -7,66 +7,65 @@ const isActive = (href: string) => {
   const normalized = href.replace(/\/$/, "") || "/";
   return pathname === normalized || pathname.startsWith(normalized + "/");
 };
-
-const logoUrl =
-  "https://format.creatorcdn.com/07d76fef-7923-45d8-af7f-d7f464fd7bac/0/0/0/0,0,2000,1575,960,1575/0-0-0/3b5b3074-d587-4e8d-8196-db9374b2cd5c/1/1/logo2.png?fjkss=exp=2095985325~hmac=99cb97fc95d7b9313ec544a3c640c05be066833234b80693f427b2153b682e1f";
 ---
 
-<header class="bg-[color:var(--color-paper)]">
-  <div class="mx-auto max-w-[1200px] px-6 lg:px-10 pt-8 pb-5 flex flex-col items-center gap-6">
-    <a href="/" class="block">
-      <img
-        src={logoUrl}
-        alt="Lisbon Street Photo Fest"
-        class="h-28 sm:h-32 w-auto"
-        loading="eager"
-      />
+<header class="bg-[color:var(--color-paper)]" data-reveal>
+  <div
+    class="mx-auto max-w-[1400px] px-4 sm:px-6 py-4 flex items-center justify-between gap-4 sm:gap-6 text-[15px] font-semibold"
+  >
+    <a
+      href="/"
+      class="shrink-0 whitespace-nowrap text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)] transition-colors text-sm sm:text-[15px]"
+    >
+      <span class="oh"><span class="oh__inner">Lisbon Street Photo Fest</span></span>
     </a>
 
-    <p
-      class="uppercase tracking-[0.22em] text-[11px] text-[color:var(--color-muted)]"
+    <span
+      class="hidden lg:block flex-1 text-center font-normal text-[color:var(--color-muted)] whitespace-nowrap"
     >
-      25 – 27 September 2026 · Lisboa
-    </p>
+      <span class="oh"><span class="oh__inner">25 – 27 September 2026 · Lisbon</span></span>
+    </span>
 
-    <nav
-      class="flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[15px] pt-1"
-    >
+    {/* Desktop nav (md+) — inline */}
+    <nav class="hidden md:flex items-center justify-end gap-x-5 lg:gap-x-6 shrink-0">
       {
         site.nav.map((item) => {
           if (item.children) {
-            const childActive = item.children.some((c) => isActive(c.href));
+            const branchActive = (n: typeof item): boolean =>
+              (!!n.href && isActive(n.href)) ||
+              (n.children?.some((c) => branchActive(c)) ?? false);
+            const childActive = item.children.some((c) => branchActive(c));
             return (
               <div class="relative group">
                 <button
                   type="button"
                   class:list={[
-                    "link-quiet inline-flex items-center gap-1",
+                    "inline-flex items-center transition-colors",
                     childActive
-                      ? "border-b border-[color:var(--color-ink)] pb-0.5"
-                      : "text-[color:var(--color-ink)]/85 hover:text-[color:var(--color-ink)]",
+                      ? "text-[color:var(--color-ink)] underline underline-offset-4"
+                      : "text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)]",
                   ]}
                   aria-haspopup="true"
                 >
-                  {item.label}
-                  <span class="text-[10px] opacity-60 transition-transform group-hover:rotate-180">
-                    ▾
+                  <span class="oh">
+                    <span class="oh__inner inline-flex items-center gap-1">
+                      {item.label}
+                      <span class="text-[10px] opacity-60 transition-transform group-hover:rotate-180">▾</span>
+                    </span>
                   </span>
                 </button>
-                <div
-                  class="absolute left-1/2 -translate-x-1/2 top-full pt-2 z-40 hidden group-hover:block group-focus-within:block"
-                >
-                  <div class="bg-[color:var(--color-paper)] border border-[color:var(--color-rule)] shadow-sm py-2 min-w-[240px]">
+                <div class="absolute left-1/2 -translate-x-1/2 top-full pt-3 z-40 hidden group-hover:block group-focus-within:block">
+                  <div class="bg-[color:var(--color-paper)] border border-[color:var(--color-rule)] py-2 min-w-[200px]">
                     {item.children.map((c) => {
-                      const active = isActive(c.href);
+                      const active = !!c.href && isActive(c.href);
                       return (
                         <a
                           href={c.href}
                           class:list={[
-                            "block px-4 py-2 text-sm whitespace-nowrap",
+                            "block px-4 py-2 text-[15px] whitespace-nowrap transition-colors",
                             active
-                              ? "bg-black/5 text-[color:var(--color-ink)]"
-                              : "text-[color:var(--color-ink)]/85 hover:bg-black/5",
+                              ? "text-[color:var(--color-ink)] underline underline-offset-[6px]"
+                              : "text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)]",
                           ]}
                         >
                           {c.label}
@@ -86,18 +85,219 @@ const logoUrl =
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
               class:list={[
-                "link-quiet",
+                "transition-colors",
                 active
-                  ? "border-b border-[color:var(--color-ink)] pb-0.5"
-                  : "text-[color:var(--color-ink)]/85 hover:text-[color:var(--color-ink)]",
+                  ? "text-[color:var(--color-ink)] underline underline-offset-4"
+                  : "text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)]",
               ]}
             >
-              {item.label}
+              <span class="oh"><span class="oh__inner">{item.label}</span></span>
             </a>
           );
         })
       }
     </nav>
+
+    {/* Mobile hamburger (below md) */}
+    <button
+      type="button"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 -mr-2 text-[color:var(--color-ink)]"
+      aria-label="Open menu"
+      aria-expanded="false"
+      data-menu-toggle
+    >
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+        <line x1="3" y1="7" x2="19" y2="7" />
+        <line x1="3" y1="15" x2="19" y2="15" />
+      </svg>
+    </button>
   </div>
-  <div class="border-b border-[color:var(--color-rule)]"></div>
+
+  {/* Mobile menu — iOS-style sliding stack:
+      - Top panel: every nav item (parents become tappable "→")
+      - One sub-panel per parent: back button + that parent's children
+      JS handles the slide via translateX on the inner track. */}
+  <div
+    class="md:hidden border-t border-[color:var(--color-rule)] bg-[color:var(--color-paper)] overflow-hidden"
+    hidden
+    data-mobile-menu
+  >
+    <div
+      class="flex transition-transform duration-300 ease-[cubic-bezier(0.32,0.72,0,1)]"
+      data-menu-track
+      style="width:100%"
+    >
+      {/* Panel 0 — top level */}
+      <nav
+        class="w-full shrink-0 px-4 sm:px-6 py-3 flex flex-col text-[16px] font-medium"
+        data-menu-panel="root"
+      >
+        {site.nav.map((item, i) => {
+          if (item.children) {
+            return (
+              <button
+                type="button"
+                class="flex items-center justify-between py-3 text-left text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)] transition-colors"
+                data-submenu-open={String(i)}
+              >
+                <span>{item.label}</span>
+                <span class="text-[color:var(--color-muted)] text-lg">›</span>
+              </button>
+            );
+          }
+          const external = item.href!.startsWith("http");
+          const active = isActive(item.href!);
+          return (
+            <a
+              href={item.href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              class:list={[
+                "py-3 transition-colors",
+                active
+                  ? "text-[color:var(--color-ink)] underline underline-offset-[6px]"
+                  : "text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)]",
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+
+      {/* Sub-panels — one per parent item */}
+      {site.nav.map((item, i) =>
+        item.children ? (
+          <nav
+            class="w-full shrink-0 px-4 sm:px-6 py-3 flex flex-col text-[16px] font-medium"
+            data-menu-panel={String(i)}
+          >
+            <button
+              type="button"
+              class="flex items-center gap-2 py-3 text-left text-[color:var(--color-muted)] hover:text-[color:var(--color-ink)] transition-colors text-[14px]"
+              data-submenu-back
+            >
+              <span class="text-lg">‹</span>
+              <span>{item.label}</span>
+            </button>
+            <div class="h-px bg-[color:var(--color-rule)] -mx-4 sm:-mx-6 mb-1"></div>
+            {item.children.map((c) => {
+              const active = !!c.href && isActive(c.href);
+              return (
+                <a
+                  href={c.href}
+                  class:list={[
+                    "py-3 transition-colors",
+                    active
+                      ? "text-[color:var(--color-ink)] underline underline-offset-[6px]"
+                      : "text-[color:var(--color-ink)] hover:text-[color:var(--color-muted)]",
+                  ]}
+                >
+                  {c.label}
+                </a>
+              );
+            })}
+          </nav>
+        ) : null,
+      )}
+    </div>
+  </div>
+
+  <hr data-rule />
 </header>
+
+<script is:inline>
+  // Mobile menu — open/close + nested sub-view sliding.
+  // is:inline so it runs synchronously without bundler involvement.
+  (function () {
+    function setup() {
+      var btn = document.querySelector("[data-menu-toggle]");
+      var menu = document.querySelector("[data-mobile-menu]");
+      if (!btn || !menu) return;
+      if (btn.getAttribute("data-bound") === "1") return;
+      btn.setAttribute("data-bound", "1");
+
+      var track = menu.querySelector("[data-menu-track]");
+      var panels = menu.querySelectorAll("[data-menu-panel]");
+      // Stack panels horizontally: width = panelCount * 100%
+      var panelCount = panels.length;
+      if (track) {
+        track.style.width = panelCount * 100 + "%";
+        // Each panel is 100% of viewport; in flex container width=N*100%,
+        // each child gets width (1/N)*100% if flex-basis is auto + shrink:0,
+        // but our children have w-full (100%). Combined with parent's width
+        // = N * 100% of parent's parent, each child takes (1/N) * (N*100%) =
+        // 100% of original. Good.
+        // Actually: each child has w-full = 100% of TRACK width = 100% of (N*100% of menu) = N*100% of menu. WRONG.
+        // We need each child to be 100% of the menu width. With track width N*100%, each child needs 1/N of track.
+        // Easiest: explicit per-panel width.
+        panels.forEach(function (p) {
+          p.style.width = (100 / panelCount) + "%";
+          p.style.flexShrink = "0";
+        });
+      }
+
+      function open() {
+        menu.removeAttribute("hidden");
+        btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", "Close menu");
+        document.body.style.overflow = "hidden";
+        // Reset to root view
+        goTo(0);
+      }
+      function close() {
+        menu.setAttribute("hidden", "");
+        btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-label", "Open menu");
+        document.body.style.overflow = "";
+      }
+
+      // Build panel index map: panel name → index in DOM
+      var panelIndex = {};
+      panels.forEach(function (p, i) {
+        panelIndex[p.getAttribute("data-menu-panel")] = i;
+      });
+
+      function goTo(idx) {
+        if (!track) return;
+        track.style.transform = "translateX(-" + (idx * (100 / panelCount)) + "%)";
+      }
+
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var expanded = btn.getAttribute("aria-expanded") === "true";
+        if (expanded) close();
+        else open();
+      });
+
+      // Open sub-panel
+      menu.querySelectorAll("[data-submenu-open]").forEach(function (b) {
+        b.addEventListener("click", function (e) {
+          e.preventDefault();
+          var key = b.getAttribute("data-submenu-open");
+          if (key in panelIndex) goTo(panelIndex[key]);
+        });
+      });
+      // Back to root
+      menu.querySelectorAll("[data-submenu-back]").forEach(function (b) {
+        b.addEventListener("click", function (e) {
+          e.preventDefault();
+          goTo(0);
+        });
+      });
+
+      // Closing menu when a leaf link is tapped
+      menu.querySelectorAll("a").forEach(function (a) {
+        a.addEventListener("click", close);
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") close();
+      });
+    }
+    setup();
+    document.addEventListener("astro:page-load", setup);
+    document.addEventListener("DOMContentLoaded", setup);
+  })();
+</script>

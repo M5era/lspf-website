@@ -67,10 +67,10 @@ export default defineType({
     }),
     defineField({
       name: "ticketTailorEventId",
-      title: "Ticket Tailor Event ID",
+      title: "Ticket Tailor event link",
       type: "string",
       description:
-        "The widget event ID from Ticket Tailor. The site embeds the ticket widget using this ID.",
+        "The Ticket Tailor event link or event ID. The site opens the ticket checkout page using this value.",
     }),
     defineField({
       name: "cover",

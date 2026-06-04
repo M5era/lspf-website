@@ -1,18 +1,24 @@
 ---
+import "@fontsource-variable/instrument-sans";
 import "@/styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
+import Motion from "@/components/Motion.astro";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /** Set to "home" on the homepage to enable the full intro timeline. */
+  page?: string;
 }
 
 const {
   title,
   description = "Lisbon Street Photo Fest — 25–27 September 2026. Exhibitions, talks, workshops, and photowalks in the heart of Lisbon.",
   ogImage,
+  page,
 } = Astro.props;
 
 const fullTitle = title.includes("Lisbon Street Photo Fest")
@@ -21,17 +27,24 @@ const fullTitle = title.includes("Lisbon Street Photo Fest")
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-page={page}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <link
-      rel="preconnect"
-      href="https://rsms.me/"
-    />
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+
+    {/* Enable reveal animations only when JS is on and motion is allowed.
+        Runs before paint so hidden initial states never flash. */}
+    <script is:inline>
+      if (
+        !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ) {
+        document.documentElement.classList.add("motion");
+      }
+    </script>
+
+    <ClientRouter />
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
@@ -53,5 +66,6 @@ const fullTitle = title.includes("Lisbon Street Photo Fest")
       <slot />
     </main>
     <Footer />
+    <Motion />
   </body>
 </html>

@@ -31,7 +31,7 @@ const {
         alt={image.alt}
         width={image.width}
         height={image.height}
-        class="w-full h-auto object-cover"
+        class="fade-in w-full h-auto object-cover"
         loading="eager"
         decoding="async"
       />
@@ -39,22 +39,24 @@ const {
 
     {
       (title || eyebrow || subtitle) && (
-        <div class="mt-10 mb-4 max-w-3xl">
+        <div class="mt-8 sm:mt-10 mb-4 max-w-3xl" data-reveal>
           {eyebrow && (
             <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">
-              {eyebrow}
+              <span class="oh"><span class="oh__inner">{eyebrow}</span></span>
             </p>
           )}
           {title && (
-            <h1 class="h-display text-4xl sm:text-5xl lg:text-6xl">{title}</h1>
+            <h1 class="h-display text-3xl sm:text-5xl lg:text-6xl">
+              <span class="oh"><span class="oh__inner">{title}</span></span>
+            </h1>
           )}
           {subtitle && (
-            <p class="mt-5 text-lg sm:text-xl text-[color:var(--color-ink)]/80 leading-relaxed">
+            <p class="mt-4 sm:mt-5 text-base sm:text-lg lg:text-xl text-[color:var(--color-ink)]/80 leading-relaxed">
               {subtitle}
             </p>
           )}
           {ctaLabel && ctaHref && (
-            <div class="mt-7">
+            <div class="mt-6 sm:mt-7">
               <a
                 href={ctaHref}
                 target={ctaHref.startsWith("http") ? "_blank" : undefined}

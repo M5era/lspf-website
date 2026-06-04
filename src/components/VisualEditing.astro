@@ -1,0 +1,14 @@
+---
+// Loads @sanity/visual-editing on /preview/* pages so Sanity Studio's
+// Presentation tool can sync navigation, refresh on Sanity content changes,
+// and (optionally) overlay click-to-edit hotspots.
+//
+// Only include this on PREVIEW pages — never on the public site.
+---
+
+<script>
+  import { enableVisualEditing } from "@sanity/visual-editing";
+  // Live-updates as drafts change. Studio Presentation tool talks to this
+  // via postMessage between the iframe and its parent.
+  enableVisualEditing();
+</script>

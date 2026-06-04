@@ -16,7 +16,7 @@ const colClass =
       : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 ---
 
-<div class={`grid gap-4 sm:gap-6 ${colClass}`}>
+<div class={`grid gap-4 sm:gap-6 ${colClass}`} data-grid>
   {
     items.map((it) => (
       <figure class="flex flex-col gap-2">
@@ -24,7 +24,7 @@ const colClass =
           <img
             src={it.image.src}
             alt={it.image.alt}
-            class="w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.02]"
+            class="fade-in w-full h-auto object-cover transition-transform duration-500 hover:scale-[1.02]"
             loading="lazy"
             decoding="async"
           />

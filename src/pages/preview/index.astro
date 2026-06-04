@@ -4,6 +4,7 @@ export const prerender = false;
 import Base from "@/layouts/Base.astro";
 import Hero from "@/components/Hero.astro";
 import PreviewBanner from "@/components/PreviewBanner.astro";
+import VisualEditing from "@/components/VisualEditing.astro";
 import { getCurrentEdition, getWorkshops, getFinalistSingles } from "@/lib/loaders";
 
 const opts = { preview: true };
@@ -25,6 +26,7 @@ const year = currentEdition.year;
 
 <Base title="Home (Preview)">
   <PreviewBanner />
+  <VisualEditing />
   <Hero
     image={currentEdition.heroImage}
     eyebrow={`${startDay}–${endDay} ${month} ${year}`}

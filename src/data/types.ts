@@ -72,7 +72,7 @@ export type Edition = {
 export type NavItem = {
   label: string;
   href?: string;
-  children?: { label: string; href: string }[];
+  children?: NavItem[];
 };
 
 export type SiteSettings = {

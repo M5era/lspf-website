@@ -5,6 +5,7 @@ import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./schemaTypes";
 
 const SITE = "https://lspf-2026.pages.dev";
+const LOCAL_PREVIEW_ORIGIN = "http://localhost:4321";
 
 export default defineConfig({
   name: "default",
@@ -17,7 +18,10 @@ export default defineConfig({
     structureTool(),
     presentationTool({
       previewUrl: {
-        origin: SITE,
+        origin:
+          process.env.NODE_ENV === "development"
+            ? LOCAL_PREVIEW_ORIGIN
+            : SITE,
         preview: "/preview/",
       },
       resolve: {

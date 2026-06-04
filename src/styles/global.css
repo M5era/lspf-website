@@ -1,12 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  /* Single neutral grotesque for the whole site — closer to Format's default
-     portfolio typography. Inter is the closest free analog to the original. */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif;
-  --font-display: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Helvetica, Arial, sans-serif;
+  /* Instrument Sans (variable) — the grotesque used by the Players Club /
+     sanity-astro-club template. Loaded via Fontsource in Base.astro; Inter
+     remains a fallback so nothing breaks before the font is installed. */
+  --font-sans: "Instrument Sans Variable", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-display: "Instrument Sans Variable", "Inter", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 
   /* Pure monochrome palette — the original site is essentially black text
      on a near-white background, with photography providing all the color. */
@@ -38,13 +39,13 @@ body {
   color: var(--color-paper);
 }
 
-/* Display headings: slightly tighter tracking, medium weight — closer to a
-   Helvetica/Söhne grotesque feel than the bold "Inter Tight" we had. */
+/* Display headings: tighter tracking + line-height, taking cues from the
+   template's compact grotesque display scale. */
 .h-display {
   font-family: var(--font-display);
-  letter-spacing: -0.015em;
-  font-weight: 500;
-  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 0.98;
 }
 
 .h-section {
@@ -67,4 +68,112 @@ body {
 }
 .link-quiet:hover {
   border-bottom-color: currentColor;
+}
+
+/* ───────────────────────── Motion / reveal system ─────────────────────────
+   All reveal animations are pure CSS. They auto-play on element render. No
+   JS dependency, no race conditions with Astro's ClientRouter / module-script
+   loading — text always ends up visible.
+
+   With prefers-reduced-motion: reduce, all animations are disabled by the
+   media query below; elements render at their final state instantly. */
+
+/* Masked line reveal: .oh clips, .oh__inner slides up from below. The small
+   padding/negative-margin pair gives descenders (g, p, y) room so the clip
+   doesn't shave them, without affecting layout. */
+.oh {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+.oh__inner {
+  display: inline-block;
+  animation: reveal-line 0.85s cubic-bezier(0.21, 0.61, 0.35, 1) both;
+}
+
+@keyframes reveal-line {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* Stagger up to 8 sibling .oh elements via nth-child delays. Covers headers,
+   nav rows, hero text blocks. Beyond 8 they all animate at the last delay. */
+[data-reveal] .oh:nth-child(2) .oh__inner { animation-delay: 0.07s; }
+[data-reveal] .oh:nth-child(3) .oh__inner { animation-delay: 0.14s; }
+[data-reveal] .oh:nth-child(4) .oh__inner { animation-delay: 0.21s; }
+[data-reveal] .oh:nth-child(5) .oh__inner { animation-delay: 0.28s; }
+[data-reveal] .oh:nth-child(6) .oh__inner { animation-delay: 0.35s; }
+[data-reveal] .oh:nth-child(7) .oh__inner { animation-delay: 0.42s; }
+[data-reveal] .oh:nth-child(n + 8) .oh__inner { animation-delay: 0.49s; }
+
+/* Grid stagger: children fade up. nth-child delays. */
+[data-grid] > * {
+  animation: reveal-grid 0.7s cubic-bezier(0.21, 0.61, 0.35, 1) both;
+}
+[data-grid] > *:nth-child(2) { animation-delay: 0.06s; }
+[data-grid] > *:nth-child(3) { animation-delay: 0.12s; }
+[data-grid] > *:nth-child(4) { animation-delay: 0.18s; }
+[data-grid] > *:nth-child(5) { animation-delay: 0.24s; }
+[data-grid] > *:nth-child(6) { animation-delay: 0.30s; }
+[data-grid] > *:nth-child(7) { animation-delay: 0.36s; }
+[data-grid] > *:nth-child(8) { animation-delay: 0.42s; }
+[data-grid] > *:nth-child(n + 9) { animation-delay: 0.48s; }
+
+@keyframes reveal-grid {
+  from {
+    opacity: 0;
+    transform: translateY(12%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hairline rules that "draw" in from the left. */
+hr[data-rule] {
+  border: 0;
+  height: 1px;
+  background: var(--color-rule);
+  margin: 0;
+  transform-origin: 0% 50%;
+  animation: reveal-rule 1s cubic-bezier(0.21, 0.61, 0.35, 1) both;
+}
+
+@keyframes reveal-rule {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Per-image fade-in (perceived performance on image-heavy pages). Toggled
+   by motion.ts when each image's `load` event fires. */
+img.fade-in {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+img.fade-in.loaded {
+  opacity: 1;
+}
+
+/* Respect users who prefer reduced motion — no animations, instant state. */
+@media (prefers-reduced-motion: reduce) {
+  .oh__inner,
+  [data-grid] > *,
+  hr[data-rule],
+  img.fade-in {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

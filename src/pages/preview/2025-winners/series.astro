@@ -3,6 +3,7 @@ export const prerender = false;
 
 import Base from "@/layouts/Base.astro";
 import PreviewBanner from "@/components/PreviewBanner.astro";
+import VisualEditing from "@/components/VisualEditing.astro";
 import { getFinalistSeries } from "@/lib/loaders";
 
 const series2025 = await getFinalistSeries(2025, { preview: true });
@@ -10,6 +11,7 @@ const series2025 = await getFinalistSeries(2025, { preview: true });
 
 <Base title="2025 Series (Preview)">
   <PreviewBanner />
+  <VisualEditing />
   <section class="mx-auto max-w-[1400px] px-6 lg:px-12 pt-12 pb-8">
     <p class="uppercase tracking-[0.16em] text-xs text-[color:var(--color-muted)] mb-4">2025 Edition · Open Call Finalists</p>
     <h1 class="h-display text-5xl sm:text-6xl max-w-3xl">Series</h1>
