@@ -40,7 +40,7 @@ export default defineConfig({
           {
             route: "/preview/2025-edition",
             filter: '_type == "person" || _type == "sponsor"',
-          },
+          }, 
           {
             route: "/preview/2025-winners/singles",
             filter: '_type == "finalistSingle"',

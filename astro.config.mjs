@@ -7,9 +7,9 @@ import cloudflare from "@astrojs/cloudflare";
 // https://astro.build/config
 export default defineConfig({
   site: "https://lspf-2026.pages.dev",
-  // Hybrid: most pages stay prerendered (static, edge-served), only
-  // /preview/* opts into SSR for live draft preview.
-  output: "hybrid",
+  // Astro now uses static output by default. Dynamic preview routes still work
+  // when pages set `prerender = false` and the Cloudflare adapter is used.
+  output: "static",
   adapter: cloudflare({ imageService: "passthrough" }),
   integrations: [sitemap()],
   vite: {
